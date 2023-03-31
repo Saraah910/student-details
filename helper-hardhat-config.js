@@ -12,5 +12,5 @@ const networkConfig = {
     }
 }
 const developmentChains = ["hardhat","goerli"]
-const EntranceFees = 1
+const EntranceFees = "10000000000000000000"
 module.exports = {networkConfig, EntranceFees, developmentChains}
