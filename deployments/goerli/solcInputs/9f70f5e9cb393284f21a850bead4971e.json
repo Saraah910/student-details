@@ -1,0 +1,35 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "contracts/details.sol": {
+      "content": "//SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.7;\r\n\r\nerror details__NotSufficientAge();\r\nerror details__SeatsFullfilled();\r\nerror details__NotSufficientAmount();\r\n\r\ncontract data{\r\n\r\n    uint256 private immutable i_entranceFees;\r\n\r\n    struct Details{\r\n        string Name;\r\n        uint16 Age;\r\n        uint256 Id;\r\n        string Address;\r\n    }\r\n    mapping(address => Details) private s_details;\r\n    address[] private s_players;\r\n\r\n    constructor(uint256 entranceFees){\r\n        i_entranceFees = entranceFees;\r\n    }\r\n\r\n    modifier Entry(){\r\n        if(msg.value >= i_entranceFees){\r\n            _;\r\n        }\r\n    }\r\n\r\n    function EntreDetails( \r\n        string memory name, \r\n        uint16 age, \r\n        uint256 id, \r\n        string memory add \r\n        ) Entry public payable {\r\n            \r\n        if(age < 18){\r\n            revert details__NotSufficientAge();\r\n        }\r\n        if(s_players.length > 25){\r\n            revert details__SeatsFullfilled();\r\n        }\r\n        if(msg.value < i_entranceFees){\r\n            revert details__NotSufficientAmount();\r\n        }\r\n        Details memory d1 = Details({\r\n            Name: name,\r\n            Age: age,\r\n            Id: id,\r\n            Address: add\r\n        });\r\n        s_details[msg.sender] = d1;\r\n        s_players.push(msg.sender);\r\n    }\r\n\r\n    function getDetailCount() public view returns(uint256){\r\n        return s_players.length;\r\n    }\r\n\r\n    function ShowDetails(uint256 index) public view returns(Details memory){\r\n        address toFind = s_players[index];\r\n        return s_details[toFind];\r\n    }\r\n\r\n    function getEntranceFees()public view returns(uint256){\r\n        return i_entranceFees;\r\n    }\r\n\r\n    function ShowTotalFunds()public view returns(uint256){\r\n        return address(this).balance;\r\n    }\r\n}"
+    }
+  },
+  "settings": {
+    "optimizer": {
+      "enabled": false,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata",
+          "devdoc",
+          "userdoc",
+          "storageLayout",
+          "evm.gasEstimates"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    },
+    "metadata": {
+      "useLiteralContent": true
+    }
+  }
+}
